@@ -6,10 +6,13 @@
 package main.java;
 
 import java.io.InputStream;
+import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -18,12 +21,13 @@ import javax.ws.rs.core.Response;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import main.java.Entity.ContributorItemEntity;
+import main.java.Entity.ResponseError;
 import main.java.Entity.ResponseSuccessWithMessage;
 
 @Path("/")
 public class mainService {
 
-	public static final int TIMEOUT = 10; // In seconds
 	GsonBuilder builder = new GsonBuilder();
 	Gson gson = builder.create();
 
@@ -53,4 +57,74 @@ public class mainService {
 		// return HTTP response 200 in case of success
 		return Response.status(200).entity(result).build();
 	}
+
+	@GET
+	@Path("/getAllContributionList")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response getAllContributionList(InputStream incomingData) {
+		String result = "";
+
+		if (CommonShared.getLocalDBHelper() != null) {
+
+			try {
+				List<ContributorItemEntity> list = CommonShared.getLocalDBHelper().getContributionList();
+
+				result = gson.toJson(list);
+
+				ResponseSuccessWithMessage resp = new ResponseSuccessWithMessage("success", result);
+
+				result = gson.toJson(resp);
+
+				return Response.status(200).entity(result).build();
+
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+				return CommonShared.returnDBError();
+			}
+
+		} else {
+			return CommonShared.returnDBError();
+		}
+	}
+
+	@GET
+	@Path("/getContributionByID/{con_id}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response getContributionListByID(InputStream incomingData, @PathParam("con_id") String con_id) {
+		String result = "";
+
+		if (this.isNullOrEmpty(con_id)) {
+			return CommonShared.returnInvalidInputError();
+		}
+
+		if (CommonShared.getLocalDBHelper() != null) {
+
+			try {
+				List<ContributorItemEntity> list = CommonShared.getLocalDBHelper().getContributionList();
+
+				result = gson.toJson(list);
+
+				ResponseSuccessWithMessage resp = new ResponseSuccessWithMessage("success", result);
+
+				result = gson.toJson(resp);
+
+				return Response.status(200).entity(result).build();
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return CommonShared.returnDBError();
+
+			}
+
+		} else {
+			return CommonShared.returnDBError();
+		}
+
+	}
+
+	public static boolean isNullOrEmpty(String s) {
+		return s == null || s.equals("");
+	}
+
 }

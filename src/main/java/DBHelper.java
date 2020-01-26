@@ -5,13 +5,23 @@ package main.java;
  */
 
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+
+import main.java.Entity.ContributorItemEntity;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DBHelper {
 
 	public static void main(String args[]) {
 
 		DBHelper dbHelper = new DBHelper(CommonShared.db_hostname, CommonShared.db_username, CommonShared.db_password);
+
+		ContributorItemEntity tmp = dbHelper.getContributorByID("1");
+
+		Utils.log(tmp.full_content);
+
 	}
 
 	private BasicDataSource source;
@@ -27,8 +37,8 @@ public class DBHelper {
 			source.setUsername(username);
 			source.setTestOnBorrow(true);
 			source.setInitialSize(100);
-			source.setMaxActive(100);
-			source.setMaxIdle(10);
+			source.setMaxActive(4000);
+			source.setMaxIdle(100);
 			Connection con = source.getConnection();
 			con.close();
 			Utils.log("*********************");
@@ -46,104 +56,109 @@ public class DBHelper {
 				+ source.getNumIdle());
 	}
 
-//    public User getUserByIdAndAgentId(int id) {
-//        User user = new User();
-//        String query;
-//        Connection con = null;
-//        PreparedStatement ps = null;
-//        ResultSet rs = null;
-//
-//        query = "select * from auth_user where id=" + id;
-//
-//        Utils.log(query + " id:" + id);
-//        try {
-//            con = source.getConnection();
-//            ps = con.prepareStatement(query);
-//            rs = ps.executeQuery(query);
-//            if (rs.next()) {
-//                user.userId = rs.getInt("id");
-//                user.status = rs.getInt("status");
-//                user.email = rs.getString("email");
-//                user.type = rs.getInt("type");
-//            }
-//            rs.close();
-//            con.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            if (ps != null) {
-//                try {
-//                    ps.close();
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            if (con != null) {
-//                try {
-//                    con.close();
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            if (rs != null) {
-//                try {
-//                    rs.close();
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//        return user;
-//    }
-//
-//    public User getUserById(int id) {
-//        User user = new User();
-//        String query;
-//        Connection con = null;
-//        PreparedStatement ps = null;
-//        ResultSet rs = null;
-//
-//        query = "select * from auth_user where id=" + id;
-//
-//        Utils.log(query + " id:" + id);
-//        try {
-//            con = source.getConnection();
-//            ps = con.prepareStatement(query);
-//            rs = ps.executeQuery(query);
-//            if (rs.next()) {
-//                user.userId = rs.getInt("id");
-//                user.status = rs.getInt("status");
-//                user.email = rs.getString("email");
-//                user.type = rs.getInt("type");
-//            }
-//            rs.close();
-//            con.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            if (ps != null) {
-//                try {
-//                    ps.close();
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            if (con != null) {
-//                try {
-//                    con.close();
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            if (rs != null) {
-//                try {
-//                    rs.close();
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//        return user;
-//    }
+	public ContributorItemEntity getContributorByID(String id) {
+		ContributorItemEntity contribution_item = new ContributorItemEntity();
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+
+			con = source.getConnection();
+			ps = con.prepareStatement("select * from contributor where id=?");
+			ps.setString(1, id);
+
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				contribution_item.id = rs.getInt(1) + "";
+				contribution_item.item_type = rs.getString(2);
+				contribution_item.title = rs.getString(3);
+				contribution_item.full_content = rs.getString(4);
+
+				contribution_item.publish_date = rs.getString(5);
+				contribution_item.address = rs.getString(6);
+				contribution_item.contact_person_name = rs.getString(7);
+
+				contribution_item.contact = rs.getString(8);
+				contribution_item.topic_status = rs.getString(9);
+				contribution_item.urgency_rating = rs.getString(10);
+
+				contribution_item.verify_status = rs.getString(11);
+				contribution_item.publish_date_epoch_time = rs.getString(12);
+			}
+			rs.close();
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (ps != null) {
+				try {
+					ps.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return contribution_item;
+	}
+
+	public List<ContributorItemEntity> getContributionList() throws SQLException {
+
+		List<ContributorItemEntity> list = new ArrayList<ContributorItemEntity>();
+		Connection con = source.getConnection();
+		PreparedStatement ps;
+
+		try {
+			ps = con.prepareStatement("select * from contributor");
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+
+				ContributorItemEntity contribution_item = new ContributorItemEntity();
+				contribution_item.id = rs.getInt(1) + "";
+				contribution_item.item_type = rs.getString(2);
+				contribution_item.title = rs.getString(3);
+				contribution_item.full_content = rs.getString(4);
+
+				contribution_item.publish_date = rs.getString(5);
+				contribution_item.address = rs.getString(6);
+				contribution_item.contact_person_name = rs.getString(7);
+
+				contribution_item.contact = rs.getString(8);
+				contribution_item.topic_status = rs.getString(9);
+				contribution_item.urgency_rating = rs.getString(10);
+
+				contribution_item.verify_status = rs.getString(11);
+				contribution_item.publish_date_epoch_time = rs.getString(12);
+
+				list.add(contribution_item);
+
+			}
+
+			rs.close();
+			ps.close();
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
+	}
 
 } // end
