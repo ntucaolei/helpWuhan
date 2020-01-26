@@ -12,13 +12,12 @@ public class DBHelper {
 	public static void main(String args[]) {
 
 		DBHelper dbHelper = new DBHelper(CommonShared.db_hostname, CommonShared.db_username, CommonShared.db_password);
-
 	}
 
 	private BasicDataSource source;
 
 	public DBHelper(String hostname, String username, String password) {
-		System.out.println("Creating DB " + hostname);
+		Utils.log("Creating DB " + hostname);
 		try {
 			source = new BasicDataSource();
 			source.setDriverClassName("com.mysql.jdbc.Driver");
@@ -32,18 +31,18 @@ public class DBHelper {
 			source.setMaxIdle(10);
 			Connection con = source.getConnection();
 			con.close();
-			System.out.println("*********************");
-			System.out.println("Finish Initialize DB!");
-			System.out.println("*********************");
+			Utils.log("*********************");
+			Utils.log("Finish Initialize DB!");
+			Utils.log("*********************");
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("fail to initialize DB! ");
+			Utils.log("fail to initialize DB! ");
 		}
 	}
 
 	public void status() {
-		System.out.println(" Max active - " + source.getMaxActive() + "active - " + source.getNumActive() + " idle - "
+		Utils.log(" Max active - " + source.getMaxActive() + "active - " + source.getNumActive() + " idle - "
 				+ source.getNumIdle());
 	}
 
@@ -56,7 +55,7 @@ public class DBHelper {
 //
 //        query = "select * from auth_user where id=" + id;
 //
-//        System.out.println(query + " id:" + id);
+//        Utils.log(query + " id:" + id);
 //        try {
 //            con = source.getConnection();
 //            ps = con.prepareStatement(query);
@@ -106,7 +105,7 @@ public class DBHelper {
 //
 //        query = "select * from auth_user where id=" + id;
 //
-//        System.out.println(query + " id:" + id);
+//        Utils.log(query + " id:" + id);
 //        try {
 //            con = source.getConnection();
 //            ps = con.prepareStatement(query);
