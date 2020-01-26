@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import main.java.Entity.ContributorItemEntity;
+import main.java.Entity.DemandItemEntity;
 import main.java.Entity.ResponseError;
 import main.java.Entity.ResponseSuccessWithMessage;
 
@@ -59,6 +60,57 @@ public class mainService {
 	}
 
 	@GET
+	@Path("/getAllDemandList")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response getAllDemandList(InputStream incomingData) {
+		String result = "";
+
+		if (CommonShared.getLocalDBHelper() != null) {
+
+			List<DemandItemEntity> list = CommonShared.getLocalDBHelper().getDemandList();
+
+			result = gson.toJson(list);
+
+			ResponseSuccessWithMessage resp = new ResponseSuccessWithMessage("success", result);
+
+			result = gson.toJson(resp);
+
+			return Response.status(200).entity(result).build();
+
+		} else {
+			return CommonShared.returnDBError();
+		}
+	}
+
+	@GET
+	@Path("/getDemandByID/{demand_id}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response getDemandByID(InputStream incomingData, @PathParam("demand_id") String demand_id) {
+		String result = "";
+
+		if (this.isNullOrEmpty(demand_id)) {
+			return CommonShared.returnInvalidInputError();
+		}
+
+		if (CommonShared.getLocalDBHelper() != null) {
+
+			DemandItemEntity demand_item = CommonShared.getLocalDBHelper().getDemandByID(demand_id);
+
+			result = gson.toJson(demand_item);
+
+			ResponseSuccessWithMessage resp = new ResponseSuccessWithMessage("success", result);
+
+			result = gson.toJson(resp);
+
+			return Response.status(200).entity(result).build();
+
+		} else {
+			return CommonShared.returnDBError();
+		}
+
+	}
+
+	@GET
 	@Path("/getAllContributionList")
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response getAllContributionList(InputStream incomingData) {
@@ -66,22 +118,15 @@ public class mainService {
 
 		if (CommonShared.getLocalDBHelper() != null) {
 
-			try {
-				List<ContributorItemEntity> list = CommonShared.getLocalDBHelper().getContributionList();
+			List<ContributorItemEntity> list = CommonShared.getLocalDBHelper().getContributionList();
 
-				result = gson.toJson(list);
+			result = gson.toJson(list);
 
-				ResponseSuccessWithMessage resp = new ResponseSuccessWithMessage("success", result);
+			ResponseSuccessWithMessage resp = new ResponseSuccessWithMessage("success", result);
 
-				result = gson.toJson(resp);
+			result = gson.toJson(resp);
 
-				return Response.status(200).entity(result).build();
-
-			} catch (SQLException e) {
-
-				e.printStackTrace();
-				return CommonShared.returnDBError();
-			}
+			return Response.status(200).entity(result).build();
 
 		} else {
 			return CommonShared.returnDBError();
@@ -100,22 +145,15 @@ public class mainService {
 
 		if (CommonShared.getLocalDBHelper() != null) {
 
-			try {
-				List<ContributorItemEntity> list = CommonShared.getLocalDBHelper().getContributionList();
+			ContributorItemEntity contribution_item = CommonShared.getLocalDBHelper().getContributorByID(con_id);
 
-				result = gson.toJson(list);
+			result = gson.toJson(contribution_item);
 
-				ResponseSuccessWithMessage resp = new ResponseSuccessWithMessage("success", result);
+			ResponseSuccessWithMessage resp = new ResponseSuccessWithMessage("success", result);
 
-				result = gson.toJson(resp);
+			result = gson.toJson(resp);
 
-				return Response.status(200).entity(result).build();
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-				return CommonShared.returnDBError();
-
-			}
+			return Response.status(200).entity(result).build();
 
 		} else {
 			return CommonShared.returnDBError();
