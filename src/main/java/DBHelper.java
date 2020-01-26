@@ -8,6 +8,13 @@ import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 import java.sql.*;
 
 public class DBHelper {
+
+	public static void main(String args[]) {
+
+		DBHelper dbHelper = new DBHelper(CommonShared.db_hostname, CommonShared.db_username, CommonShared.db_password);
+
+	}
+
 	private BasicDataSource source;
 
 	public DBHelper(String hostname, String username, String password) {
