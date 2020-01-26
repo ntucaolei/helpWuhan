@@ -19,7 +19,7 @@ public class DBHelper {
 
 		DBHelper dbHelper = new DBHelper(CommonShared.db_hostname, CommonShared.db_username, CommonShared.db_password);
 
-		ContributorItemEntity tmp = dbHelper.getContributorByID("1");
+		DemandItemEntity tmp = dbHelper.getDemandByID("1");
 
 		Utils.log(tmp.full_content);
 
@@ -172,7 +172,7 @@ public class DBHelper {
 		try {
 
 			con = source.getConnection();
-			ps = con.prepareStatement("select * from contributor where id=?");
+			ps = con.prepareStatement("select * from demand where id=?");
 			ps.setString(1, id);
 
 			rs = ps.executeQuery();
@@ -231,7 +231,7 @@ public class DBHelper {
 		try {
 			Connection con = source.getConnection();
 			PreparedStatement ps;
-			ps = con.prepareStatement("select * from contributor");
+			ps = con.prepareStatement("select * from demand");
 
 			ResultSet rs = ps.executeQuery();
 
