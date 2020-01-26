@@ -8,6 +8,7 @@ import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import main.java.Entity.ContributorItemEntity;
 import main.java.Entity.DemandItemEntity;
+import main.java.Entity.FakeNewsItemEntity;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -255,7 +256,94 @@ public class DBHelper {
 				demand_item.publish_date_epoch_time = rs.getString(12);
 
 				list.add(demand_item);
+			}
 
+			rs.close();
+			ps.close();
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
+	}
+
+	public FakeNewsItemEntity getFakenewsByID(String id) {
+		FakeNewsItemEntity fakenews_item = new FakeNewsItemEntity();
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+
+			con = source.getConnection();
+			ps = con.prepareStatement("select * from fakenews where id=?");
+			ps.setString(1, id);
+
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				fakenews_item.id = rs.getInt(1) + "";
+				fakenews_item.item_type = rs.getString(2);
+				fakenews_item.pic = rs.getString(3);
+				fakenews_item.title = rs.getString(4);
+				fakenews_item.full_content = rs.getString(5);
+				fakenews_item.publish_date = rs.getString(6);
+				fakenews_item.publish_date_epoch_time = rs.getString(7);
+			}
+			rs.close();
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (ps != null) {
+				try {
+					ps.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return fakenews_item;
+	}
+
+	public List<FakeNewsItemEntity> getFakenewsList() {
+
+		List<FakeNewsItemEntity> list = new ArrayList<FakeNewsItemEntity>();
+
+		try {
+			Connection con = source.getConnection();
+			PreparedStatement ps;
+			ps = con.prepareStatement("select * from fakenews");
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+
+				FakeNewsItemEntity fakenews_item = new FakeNewsItemEntity();
+				fakenews_item.id = rs.getInt(1) + "";
+				fakenews_item.item_type = rs.getString(2);
+				fakenews_item.pic = rs.getString(3);
+				fakenews_item.title = rs.getString(4);
+				fakenews_item.full_content = rs.getString(5);
+				fakenews_item.publish_date = rs.getString(6);
+				fakenews_item.publish_date_epoch_time = rs.getString(7);
+
+				list.add(fakenews_item);
 			}
 
 			rs.close();

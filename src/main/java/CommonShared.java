@@ -24,7 +24,7 @@ public class CommonShared {
 	public static final String ERROR_CODE_DB = "1000";
 	public static final String ERROR_CODE_UNKNOWN = "2222";
 	public static final String ERROR_CODE_NOT_FOUND = "404";
-	
+
 	public static final String ERROR_CODE_INVALID_INPUT = "4000";
 
 	public static DBHelper localdbhelper = null;
@@ -66,7 +66,7 @@ public class CommonShared {
 
 		return Response.status(500).entity(result).build();
 	}
-	
+
 	public static Response returnInvalidInputError() {
 		ResponseError resp = new ResponseError("error", "请输入有效的参数。", CommonShared.ERROR_CODE_INVALID_INPUT);
 

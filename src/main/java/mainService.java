@@ -23,6 +23,7 @@ import com.google.gson.GsonBuilder;
 
 import main.java.Entity.ContributorItemEntity;
 import main.java.Entity.DemandItemEntity;
+import main.java.Entity.FakeNewsItemEntity;
 import main.java.Entity.ResponseError;
 import main.java.Entity.ResponseSuccessWithMessage;
 
@@ -148,6 +149,57 @@ public class mainService {
 			ContributorItemEntity contribution_item = CommonShared.getLocalDBHelper().getContributorByID(con_id);
 
 			result = gson.toJson(contribution_item);
+
+			ResponseSuccessWithMessage resp = new ResponseSuccessWithMessage("success", result);
+
+			result = gson.toJson(resp);
+
+			return Response.status(200).entity(result).build();
+
+		} else {
+			return CommonShared.returnDBError();
+		}
+
+	}
+
+	@GET
+	@Path("/getAllFakeNewsList")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response getAllFakeNewsList(InputStream incomingData) {
+		String result = "";
+
+		if (CommonShared.getLocalDBHelper() != null) {
+
+			List<FakeNewsItemEntity> list = CommonShared.getLocalDBHelper().getFakenewsList();
+
+			result = gson.toJson(list);
+
+			ResponseSuccessWithMessage resp = new ResponseSuccessWithMessage("success", result);
+
+			result = gson.toJson(resp);
+
+			return Response.status(200).entity(result).build();
+
+		} else {
+			return CommonShared.returnDBError();
+		}
+	}
+
+	@GET
+	@Path("/getFakeNewsByID/{fakenews_id}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response getFakeNewsByID(InputStream incomingData, @PathParam("fakenews_id") String fakenews_id) {
+		String result = "";
+
+		if (this.isNullOrEmpty(fakenews_id)) {
+			return CommonShared.returnInvalidInputError();
+		}
+
+		if (CommonShared.getLocalDBHelper() != null) {
+
+			FakeNewsItemEntity fakenews_item = CommonShared.getLocalDBHelper().getFakenewsByID(fakenews_id);
+
+			result = gson.toJson(fakenews_item);
 
 			ResponseSuccessWithMessage resp = new ResponseSuccessWithMessage("success", result);
 
