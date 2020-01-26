@@ -19,6 +19,7 @@ public class CommonShared {
 //	 0000   --- 未初始化
 //	 1000   --- DB 链接错误或DB异常
 //	 2222   --- 发生未知错误
+//   404    --- 找不到相关的对象
 
 	public static final String ERROR_CODE_NEVER_INIT = "0000";
 	public static final String ERROR_CODE_DB = "1000";

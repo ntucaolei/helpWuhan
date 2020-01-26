@@ -97,6 +97,10 @@ public class mainService {
 
 			DemandItemEntity demand_item = CommonShared.getLocalDBHelper().getDemandByID(demand_id);
 
+			if (isNullOrEmpty(demand_item.id)) {
+				return CommonShared.returnNotFoundError();
+			}
+
 			result = gson.toJson(demand_item);
 
 			ResponseSuccessWithMessage resp = new ResponseSuccessWithMessage("success", result);
@@ -148,6 +152,10 @@ public class mainService {
 
 			ContributorItemEntity contribution_item = CommonShared.getLocalDBHelper().getContributorByID(con_id);
 
+			if (isNullOrEmpty(contribution_item.id)) {
+				return CommonShared.returnNotFoundError();
+			}
+
 			result = gson.toJson(contribution_item);
 
 			ResponseSuccessWithMessage resp = new ResponseSuccessWithMessage("success", result);
@@ -198,6 +206,10 @@ public class mainService {
 		if (CommonShared.getLocalDBHelper() != null) {
 
 			FakeNewsItemEntity fakenews_item = CommonShared.getLocalDBHelper().getFakenewsByID(fakenews_id);
+
+			if (isNullOrEmpty(fakenews_item.id)) {
+				return CommonShared.returnNotFoundError();
+			}
 
 			result = gson.toJson(fakenews_item);
 
