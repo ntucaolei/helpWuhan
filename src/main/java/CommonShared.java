@@ -17,8 +17,8 @@ public class CommonShared {
 
 	public static void main(String args[]) {
 
-//		String pic_base64 = convertImageToBase64Str("/Users/Tony/buffett_02.png");
-//		System.out.println(pic_base64);
+		String pic_base64 = convertImageToBase64Str("/Users/Tony/Desktop/555555/false.jpeg");
+		System.out.println(pic_base64);
 	}
 
 	public static Gson gson = new Gson();
