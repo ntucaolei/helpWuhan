@@ -3,7 +3,6 @@ package main.java.search;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import main.java.CommonShared;
-import main.java.Entity.DemandItemEntity;
 import main.java.Entity.ResponseSuccessWithMessage;
 
 import javax.servlet.ServletContext;
@@ -17,15 +16,12 @@ import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.util.List;
 
-@Path("/")
+@Path("/search")
 public class SynthesizeSearchService {
     GsonBuilder builder = new GsonBuilder();
-
     Gson gson = builder.create();
-
     @Context
     ServletContext servletContext;
-
     @GET
     @Path("/queryDemandByCondition/{topicType}/{topicStatus}/{itemType}/{content}")
     @Produces(MediaType.TEXT_PLAIN)
@@ -36,9 +32,9 @@ public class SynthesizeSearchService {
                                            @PathParam("content") String content) {
         String result = "";
 
-        if (CommonShared.getLocalDBHelper() != null) {
+        if (SearchDBHelper.getLocalDBHelper() != null) {
             List<Object> list = TopicTypeEnums.queryByCondition( topicType, topicStatus, itemType, content);
-            result = gson.toJson(list);
+            result = builder.create().toJson(list);
             ResponseSuccessWithMessage resp = new ResponseSuccessWithMessage("success", result);
             result = gson.toJson(resp);
             return Response.status(200).entity(result).build();
