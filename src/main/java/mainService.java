@@ -26,6 +26,7 @@ import main.java.Entity.DemandItemEntity;
 import main.java.Entity.FakeNewsItemEntity;
 import main.java.Entity.ResponseError;
 import main.java.Entity.ResponseSuccessWithMessage;
+import main.java.search.TopicTypeEnums;
 
 @Path("/")
 public class mainService {
@@ -209,6 +210,25 @@ public class mainService {
 			return CommonShared.returnDBError();
 		}
 
+	}
+
+	@GET
+	@Path("/queryDemandByCondition/{topicType}/{topicStatus}/{itemType}/{content}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response queryDemandByCondition(InputStream incomingData, @PathParam("topicType") String topicType,
+			@PathParam("topicStatus") String topicStatus, @PathParam("itemType") String itemType,
+			@PathParam("content") String content) {
+		String result = "";
+
+		if (CommonShared.getLocalDBHelper() != null) {
+			List<Object> list = TopicTypeEnums.queryByCondition(topicType, topicStatus, itemType, content);
+			result = gson.toJson(list);
+			ResponseSuccessWithMessage resp = new ResponseSuccessWithMessage("success", result);
+			result = gson.toJson(resp);
+			return Response.status(200).entity(result).build();
+		} else {
+			return CommonShared.returnDBError();
+		}
 	}
 
 	public static boolean isNullOrEmpty(String s) {

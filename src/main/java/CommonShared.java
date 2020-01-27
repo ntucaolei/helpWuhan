@@ -24,7 +24,7 @@ public class CommonShared {
 
 	public static final String db_hostname = "localhost";
 	public static final String db_username = "root";
-	public static final String db_password = "";
+	public static final String db_password = "help5HanDev@2020";
 
 //	 0000   --- 未初始化
 //	 1000   --- DB 链接错误或DB异常
