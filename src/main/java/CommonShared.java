@@ -1,5 +1,10 @@
 package main.java;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Base64;
+
 import javax.ws.rs.core.Response;
 
 import com.google.gson.Gson;
@@ -7,6 +12,11 @@ import com.google.gson.Gson;
 import main.java.Entity.ResponseError;
 
 public class CommonShared {
+
+	public static void main(String args[]) {
+		String pic_base64 = convertImageToBase64Str("/Users/Tony/buffett_02.png");
+		System.out.println(pic_base64);
+	}
 
 	public static Gson gson = new Gson();
 
@@ -74,6 +84,24 @@ public class CommonShared {
 		String result = gson.toJson(resp);
 
 		return Response.status(500).entity(result).build();
+	}
+
+	public static String convertImageToBase64Str(String filePath) {
+
+		File file = new File(filePath);
+		if (!file.exists()) {
+			return "";
+		}
+		byte[] byteArr;
+		try {
+			byteArr = Files.readAllBytes(file.toPath());
+			String encodedBase64File = Base64.getEncoder().encodeToString(byteArr);
+
+			return encodedBase64File;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "";
 	}
 
 }

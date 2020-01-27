@@ -47,20 +47,6 @@ public class mainService {
 	}
 
 	@GET
-	@Path("/testJson")
-	@Produces(MediaType.TEXT_PLAIN)
-	public Response testJson(InputStream incomingData) {
-		String result = "";
-
-		ResponseSuccessWithMessage resp = new ResponseSuccessWithMessage("success", "this is a success json message");
-
-		result = gson.toJson(resp);
-
-		// return HTTP response 200 in case of success
-		return Response.status(200).entity(result).build();
-	}
-
-	@GET
 	@Path("/getAllDemandList")
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response getAllDemandList(InputStream incomingData) {
