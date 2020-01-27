@@ -49,7 +49,7 @@ public class mainService {
 
 	@GET
 	@Path("/getAllDemandList")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllDemandList(InputStream incomingData) {
 		String result = "";
 
@@ -72,7 +72,7 @@ public class mainService {
 
 	@GET
 	@Path("/getDemandByID/{demand_id}")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getDemandByID(InputStream incomingData, @PathParam("demand_id") String demand_id) {
 		String result = "";
 
@@ -104,7 +104,7 @@ public class mainService {
 
 	@GET
 	@Path("/getAllContributionList")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllContributionList(InputStream incomingData) {
 		String result = "";
 
@@ -127,7 +127,7 @@ public class mainService {
 
 	@GET
 	@Path("/getContributionByID/{con_id}")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getContributionListByID(InputStream incomingData, @PathParam("con_id") String con_id) {
 		String result = "";
 
@@ -159,7 +159,7 @@ public class mainService {
 
 	@GET
 	@Path("/getAllFakeNewsList")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllFakeNewsList(InputStream incomingData) {
 		String result = "";
 
@@ -182,7 +182,7 @@ public class mainService {
 
 	@GET
 	@Path("/getFakeNewsByID/{fakenews_id}")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getFakeNewsByID(InputStream incomingData, @PathParam("fakenews_id") String fakenews_id) {
 		String result = "";
 
@@ -214,7 +214,7 @@ public class mainService {
 
 	@GET
 	@Path("/queryDemandByCondition/{topicType}/{topicStatus}/{itemType}/{content}")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response queryDemandByCondition(InputStream incomingData, @PathParam("topicType") String topicType,
 			@PathParam("topicStatus") String topicStatus, @PathParam("itemType") String itemType,
 			@PathParam("content") String content) {

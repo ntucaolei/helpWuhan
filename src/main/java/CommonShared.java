@@ -9,13 +9,16 @@ import javax.ws.rs.core.Response;
 
 import com.google.gson.Gson;
 
+import main.java.Entity.FakeNewsItemEntity;
 import main.java.Entity.ResponseError;
+import main.java.Entity.ResponseSuccessWithMessage;
 
 public class CommonShared {
 
 	public static void main(String args[]) {
-		String pic_base64 = convertImageToBase64Str("/Users/Tony/buffett_02.png");
-		System.out.println(pic_base64);
+
+//		String pic_base64 = convertImageToBase64Str("/Users/Tony/buffett_02.png");
+//		System.out.println(pic_base64);
 	}
 
 	public static Gson gson = new Gson();
