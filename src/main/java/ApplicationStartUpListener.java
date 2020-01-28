@@ -16,7 +16,7 @@ public class ApplicationStartUpListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
 		Utils.log("---- initialize servlet context -----");
-		
+
 		CommonShared.getLocalDBHelper();
 
 		if (CommonShared.is_debug) {

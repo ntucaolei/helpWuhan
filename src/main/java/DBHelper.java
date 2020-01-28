@@ -127,7 +127,8 @@ public class DBHelper {
 
 			Connection con = source.getConnection();
 			PreparedStatement ps;
-			ps = con.prepareStatement("select * from contributor");
+			ps = con.prepareStatement(
+					"select * from contributor order by cast(publish_date_epoch_time as UNSIGNED INTEGER) desc");
 
 			ResultSet rs = ps.executeQuery();
 
@@ -232,7 +233,8 @@ public class DBHelper {
 		try {
 			Connection con = source.getConnection();
 			PreparedStatement ps;
-			ps = con.prepareStatement("select * from demand order by cast(publish_date_epoch_time as UNSIGNED INTEGER) desc");
+			ps = con.prepareStatement(
+					"select * from demand order by cast(publish_date_epoch_time as UNSIGNED INTEGER) desc");
 
 			ResultSet rs = ps.executeQuery();
 
@@ -328,7 +330,8 @@ public class DBHelper {
 		try {
 			Connection con = source.getConnection();
 			PreparedStatement ps;
-			ps = con.prepareStatement("select * from fakenews");
+			ps = con.prepareStatement(
+					"select * from fakenews order by cast(publish_date_epoch_time as UNSIGNED INTEGER) desc");
 
 			ResultSet rs = ps.executeQuery();
 
