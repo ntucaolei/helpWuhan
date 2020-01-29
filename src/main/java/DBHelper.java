@@ -292,6 +292,8 @@ public class DBHelper {
 				fakenews_item.full_content = rs.getString(5);
 				fakenews_item.publish_date = rs.getString(6);
 				fakenews_item.publish_date_epoch_time = rs.getString(7);
+				fakenews_item.external_link = rs.getString(8);
+				fakenews_item.doubtful_rating = rs.getString(9);
 			}
 			rs.close();
 			con.close();
